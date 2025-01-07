@@ -73,10 +73,11 @@ function OrbitRing({ radius, color }) {
 }
 
 // Planet Component (enhanced)
-function Planet({ position, color, size, rotationSpeed, name, info }) {
+function Planet({ position, texture, color, size, rotationSpeed, name, info }) {
   const planetRef = useRef();
   const [hovered, setHovered] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const planetTexture = useTexture(texture);
 
   useFrame((state) => {
     if (planetRef.current) {
@@ -96,8 +97,8 @@ function Planet({ position, color, size, rotationSpeed, name, info }) {
 
   return (
     <group position={position}>
-      <OrbitRing radius={size * 1.5} color={color} />
-      <ParticleSystem color={color} radius={size * 2} />
+      {/* <OrbitRing radius={size * 1.5} color={color} />
+      <ParticleSystem color={color} radius={size * 2} /> */}
       
       <mesh
         ref={planetRef}
@@ -107,18 +108,16 @@ function Planet({ position, color, size, rotationSpeed, name, info }) {
       >
         <sphereGeometry args={[size, 32, 32]} />
         <meshStandardMaterial
-          color={color}
-          metalness={0.4}
-          roughness={0.7}
-          emissive={hovered ? color : "#000000"}
-          emissiveIntensity={hovered ? 0.5 : 0}
+          map={planetTexture}
+          transparent
+          opacity={hovered ? 0.5 : 1}
         />
       </mesh>
       
       {showInfo && (
         <group position={[0, size + 1, 0]}>
           <Text
-            position={[0, 0.5, 0]}
+            position={[-5, -1, 0]}
             fontSize={0.5}
             color="white"
             anchorX="center"
@@ -127,7 +126,7 @@ function Planet({ position, color, size, rotationSpeed, name, info }) {
             {name}
           </Text>
           <Text
-            position={[0, -0.2, 0]}
+            position={[-5, -2, 0]}
             fontSize={0.3}
             color="white"
             anchorX="center"
@@ -142,73 +141,43 @@ function Planet({ position, color, size, rotationSpeed, name, info }) {
   );
 }
 
-// Rest of your planetData and export remain the same...
-
 const planetData = [
   {
-    name: "Skills",
+    name: "Introduction",
     position: [8, 0, -5],
-    color: "#4444FF",
-    size: 1,
-    rotationSpeed: 0.01,
-    info: "JavaScript • React • Three.js • Node.js"
+    texture: "/models/textures/moon.jpg",
+    color: "#44FFFF",
+    size: 5,
+    rotationSpeed: 0.0003,
+    info: "Hi, I'm a web developer from South Korea"
   },
   {
     name: "Experience",
-    position: [-8, 0, -5],
+    position: [-20, 0, -30],
+    texture: "/models/textures/2k_earth_daymap.jpg",
     color: "#44FF44",
-    size: 1.2,
-    rotationSpeed: 0.015,
+    size: 7,
+    rotationSpeed: 0.001,
     info: "5+ years of web development experience"
   },
   {
     name: "Projects",
-    position: [0, 8, -5],
+    position: [-5, -5, -60],
+    texture: "/models/textures/2k_mars.jpg",
     color: "#FF4444",
-    size: 1.1,
-    rotationSpeed: 0.02,
+    size: 5,
+    rotationSpeed: 0.002,
     info: "Portfolio • E-commerce • Web Apps"
   },
   {
     name: "Education",
-    position: [0, -8, -5],
+    position: [0, -8, -90],
+    texture: "/models/textures/2k_saturn.jpg",
     color: "#FFFF44",
-    size: 0.9,
-    rotationSpeed: 0.012,
+    size: 7,
+    rotationSpeed: 0.002,
     info: "Computer Science Degree"
   },
-  {
-    name: "About",
-    position: [12, 6, -8],
-    color: "#FF44FF",
-    size: 1.3,
-    rotationSpeed: 0.008,
-    info: "Passionate developer from South Korea"
-  },
-  {
-    name: "Contact",
-    position: [-12, -6, -8],
-    color: "#44FFFF",
-    size: 0.8,
-    rotationSpeed: 0.018,
-    info: "Email • GitHub • LinkedIn"
-  },
-  {
-    name: "Interests",
-    position: [6, -12, -8],
-    color: "#FFA500",
-    size: 1,
-    rotationSpeed: 0.014,
-    info: "3D Graphics • Game Dev • AI"
-  },
-  {
-    name: "Goals",
-    position: [-6, 12, -8],
-    color: "#8844FF",
-    size: 1.1,
-    rotationSpeed: 0.016,
-    info: "Creating innovative web experiences"
-  }
 ];
 
 
